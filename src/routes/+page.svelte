@@ -1,2 +1,19 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import Grid from '../components/Grid.svelte';
+	let words: string[][] = [
+		['H', 'E', 'L', 'L', 'O', '', '', '', '', ''],
+		['E', '', '', '', '', '', '', '', '', ''],
+		['L', '', '', '', '', '', '', '', '', ''],
+		['P', 'L', 'E', 'A', 'S', 'E', '', '', '', ''],
+		['', 'I', '', '', 'P', '', '', '', '', ''],
+		['', 'M', '', '', 'A', '', '', '', '', ''],
+		['', 'E', '', '', 'C', '', '', '', '', ''],
+		['', '', '', '', 'E', 'N', 'D', '', '', ''],
+		['', '', '', '', '', '', '', '', '', ''],
+		['B', 'A', 'N', 'A', 'N', 'A', '', '', '', '']
+	];
+</script>
+
+<h1>Crossworld</h1>
+
+<Grid {words} />

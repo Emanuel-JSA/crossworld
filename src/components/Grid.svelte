@@ -1,9 +1,9 @@
 <script lang="ts">
     import Cell from './Cell.svelte';
 
-    export let rows:number;
-    export let cols:number;
     export let words:string[][];
+    let rows = words.length;
+    let cols = words[0].length;
 
     function isBlackCell(row: number, col: number) {
         if (words[row][col] === '') {
@@ -11,7 +11,7 @@
         }
     }
 
-    function getLetter(row, col) {
+    function getLetter(row: number, col: number) {
         return words[row][col];
     }
 </script>
