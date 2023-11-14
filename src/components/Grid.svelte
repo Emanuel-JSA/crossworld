@@ -1,9 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { checkWord } from '../utils/wordCheck';
 	import type { GameState } from '../store';
 	import { gameStore } from '../store';
 	import Cell from './Cell.svelte';
 
+	onMount(() => {
+    	state.blankWords = Array.from({length: rows}, () => Array(cols).fill(''));
+	});
+	
 	let rows: number;
 	let cols: number;
 
@@ -25,19 +30,24 @@
 		let value = event.detail.value;
 		let rowPosition = event.detail.rowPosition;
 		let colPosition = event.detail.colPosition;
-		let found: boolean = false;
 
 		updateBlankWords(rowPosition, colPosition, value);
 
 		state.wordsToFind.forEach((word) => {
-			found = checkWord(state.blankWords, word);
+			checkWord(state.blankWords, word);
 		});
 	}
 
-	
 	function updateBlankWords(rowPosition: number, colPosition: number, value: string) {
-		state.blankWords[rowPosition][colPosition] = value;
-	}
+    const newBlankWords = state.blankWords.map(row => [...row]);
+    newBlankWords[rowPosition][colPosition] = value;
+    gameStore.update((value) => {
+        return {
+            ...value,
+            blankWords: newBlankWords
+        };
+    });
+}
 
 	// function checkWin() {
 	// 	for (let i = 0; i < rows; i++) {
