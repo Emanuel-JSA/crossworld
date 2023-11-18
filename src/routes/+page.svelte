@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Grid from '../components/Grid.svelte';
+	import GameGrid from '../components/GameGrid.svelte';
 	import { gameStore } from '../store';
 
 	let words: string[][] = [
@@ -24,11 +24,11 @@
 			words: words,
 			wordsToFind: wordsToFind,
 			blankWords: blankWords,
-			matchWords: matchWords
+			matchWords: matchWords,
 		};
 	});
 </script>
 
 <h1>Crossworld</h1>
 
-<Grid />
+<GameGrid />
