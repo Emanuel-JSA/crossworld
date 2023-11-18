@@ -1,5 +1,10 @@
 import { writable } from 'svelte/store';
 
+export enum Direction {
+    Vertical,
+    Horizontal,
+}
+
 export type GameState = {
     words: string[][];
     blankWords: string[][];
@@ -8,12 +13,24 @@ export type GameState = {
     foundWords: { word: string; row: number; col: number }[];
 };
 
-const initialState: GameState = {
-    words: [],
+export type UserState = {
+    currentPosition: { row: number; col: number };
+    moveDirection: Direction;
+};
+
+const initialGameState: GameState = {
+    words: Array.from({ length: 10 }, () => Array(10).fill('')),
     blankWords: [],
     matchWords: [],
     wordsToFind: [],
     foundWords: [],
 };
 
-export const gameStore = writable(initialState);
+const initialUserState: UserState = {
+    currentPosition: { row: 0, col: 0 },
+    moveDirection: Direction.Horizontal,
+};
+
+// Create writable stores
+export const gameStore = writable<GameState>(initialGameState);
+export const userStore = writable<UserState>(initialUserState);
