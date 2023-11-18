@@ -1,32 +1,46 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import GameDirection from '../utils/gameDirection';
 	const dispatch = createEventDispatcher();
 
 	export let isBlack: boolean = false;
 	export let isBlocked: boolean = false;
+	export let isOnFocus: boolean = false;
 	export let rowPosition: number;
 	export let colPosition: number;
 	export let value = '';
 
+	let id = `cell-${rowPosition}-${colPosition}`;
+
 	function handleInput(event: Event) {
 		const target = event.target as HTMLInputElement; // Cast event.target to HTMLInputElement
+
 		if (target) {
 			// Check if target is not null
-			value = target.value;
+			value = target.value.replace(/[^A-Za-z]/g, '');
+			GameDirection.nextPosition();
 			dispatch('input', { value: value, rowPosition: rowPosition, colPosition: colPosition });
 		}
+	}
+
+	function handleClick(event: Event) {
+		GameDirection.updateCurrentPosition(rowPosition, colPosition);
+		GameDirection.changeDirection();
 	}
 </script>
 
 <div class="cell" class:is-black={isBlack}>
 	{#if !isBlack}
 		<input
+			{id}
 			type="text"
 			bind:value
 			maxlength="1"
 			on:input={handleInput}
+			on:click={handleClick}
 			class:is-blocked={isBlocked}
-            disabled={isBlocked}
+			class:is-on-focus={isOnFocus}
+			disabled={isBlocked}
 		/>
 	{/if}
 </div>
@@ -46,7 +60,11 @@
 	}
 
 	.is-blocked {
-		background-color: orange;
+		background-color: blue;
+	}
+
+	.is-on-focus {
+		background-color: yellow;
 	}
 
 	input {
@@ -56,5 +74,6 @@
 		text-align: center;
 		border: none;
 		background-color: transparent;
+		text-transform: uppercase;
 	}
 </style>
