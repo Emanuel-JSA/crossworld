@@ -1,83 +1,49 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { checkWord } from '../utils/wordCheck';
-	import type { GameState } from '../store';
-	import { gameStore } from '../store';
 	import Cell from './Cell.svelte';
+	import { userStore, gameStore, Direction } from '../store';
+	import type { GameState } from '../store';
+	export let rows: number;
+	export let cols: number;
 
-	onMount(() => {
-    	state.blankWords = Array.from({length: rows}, () => Array(cols).fill(''));
-	});
-	
-	let rows: number;
-	let cols: number;
-
-	// Accessing store values
-	let state: GameState;
-	gameStore.subscribe((value: GameState) => {
-		state = value;
-		rows = state.words.length;
-		cols = state.words[0].length;
-	});
-
-	function isBlackCell(row: number, col: number) {
-		if (state.words[row][col] === '') {
-			return true;
+	$: checkFocus =  function(row: number, col: number) {
+		if ($userStore.moveDirection == Direction.Horizontal) {
+			return $userStore.currentPosition.row == row;
+		} else {
+			return $userStore.currentPosition.col == col;
 		}
 	}
-
+	
 	function handleCellInput(event: CustomEvent) {
 		let value = event.detail.value;
 		let rowPosition = event.detail.rowPosition;
 		let colPosition = event.detail.colPosition;
+		
+		updateGameStore(rowPosition, colPosition, value);
+	}
 
-		updateBlankWords(rowPosition, colPosition, value);
-
-		state.wordsToFind.forEach((word) => {
-			checkWord(state.blankWords, word);
+	function updateGameStore(rowPosition: number, colPosition: number, value: string) {
+		const words = $gameStore.blankWords.map(row => [...row]);
+		words[rowPosition][colPosition] = value;
+		gameStore.update((value) => {
+			return {
+				...value,
+				words: words
+			};
 		});
 	}
 
-	function updateBlankWords(rowPosition: number, colPosition: number, value: string) {
-    const newBlankWords = state.blankWords.map(row => [...row]);
-    newBlankWords[rowPosition][colPosition] = value;
-    gameStore.update((value) => {
-        return {
-            ...value,
-            blankWords: newBlankWords
-        };
-    });
-}
-
-	// function checkWin() {
-	// 	for (let i = 0; i < rows; i++) {
-	// 		for (let j = 0; j < cols; j++) {
-	// 			if (words[i][j] !== blankWords[i][j]) {
-	//                 return;
-	// 			}
-	// 		}
-	// 	}
-
-	//     console.log('You win!');
-	// }
 </script>
 
 <div class="grid">
 	{#each Array(rows) as _, row}
 		<div class="row">
 			{#each Array(cols) as _, col}
-				{#if isBlackCell(row, col)}
-					<Cell isBlack={true} rowPosition={row} colPosition={col} />
-				{:else if $gameStore.matchWords[row][col]}
-					<Cell
-						isBlocked={true}
-						value={state.words[row][col]}
-						rowPosition={row}
-						colPosition={col}
+				<Cell 
+					rowPosition={row} 
+					colPosition={col} 
+					isOnFocus={checkFocus(row, col)} 
+					on:input={handleCellInput}
 					/>
-				{:else}
-					<Cell on:input={handleCellInput} rowPosition={row} colPosition={col} />
-				{/if}
 			{/each}
 		</div>
 	{/each}
