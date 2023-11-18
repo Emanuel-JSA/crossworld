@@ -1,38 +1,28 @@
-# create-svelte
+# Jogo de Palavras Cruzadas em Svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Este é um projeto de estudo pessoal focado em aprender e explorar o framework Svelte. O projeto consiste em um jogo de palavras cruzadas, onde o usuário pode selecionar o tamanho da grade e preencher as palavras.
 
-## Creating a project
+## Recursos
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Seleção do tamanho da grade
+- Preenchimento de palavras
+- Gerenciamento de estado com a biblioteca de gerenciamento de estado do Svelte
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Como executar o projeto
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+1. Clone o repositório
+2. Instale as dependências com `npm install`
+3. Inicie o servidor de desenvolvimento com `npm run dev`
 
-## Developing
+## Tecnologias utilizadas
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- [Svelte](https://svelte.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
 
-```bash
-npm run dev
+## Contribuições
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Este é um projeto de estudo pessoal, portanto, não estou aceitando contribuições. No entanto, sinta-se à vontade para explorar o código e usá-lo para o seu próprio aprendizado!
 
-## Building
+## Licença
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Este projeto está licenciado sob a licença MIT.
