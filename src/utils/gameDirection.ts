@@ -57,6 +57,34 @@ const GameDirection = {
             this.updateCurrentPosition(nextRow, nextCol);
 		}
 	},
+
+	previousPosition() {
+		const userState = get(userStore);
+		const { currentPosition, moveDirection } = userState;
+		const size = GameSize.getSize();
+
+		let nextRow = currentPosition.row;
+		let nextCol = currentPosition.col;
+
+		if (moveDirection === Direction.Horizontal) {
+			nextCol = nextCol - 1;
+		} else {
+			nextRow = nextRow - 1;
+		}
+
+		if (nextCol < 0) {
+		    nextCol = size.cols - 1;
+		} else if (nextRow < 0) {
+		    nextRow = size.rows - 1;
+		}
+
+		const nextCell = document.getElementById(`cell-${nextRow}-${nextCol}`);
+
+		if (nextCell) {
+			nextCell.focus();
+			this.updateCurrentPosition(nextRow, nextCol);
+		}
+	}
 };
 
 export default GameDirection;
