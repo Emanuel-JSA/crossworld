@@ -15,9 +15,12 @@
 	function handleInput(event: Event) {
 		const target = event.target as HTMLInputElement; // Cast event.target to HTMLInputElement
 
+		// Check if target is not null
 		if (target) {
-			// Check if target is not null
-			value = target.value.replace(/[^A-Za-z]/g, '');
+			// limit to one letter only, the last letter typed
+			const tempValue = target.value.replace(/[^A-Za-z]/g, '').toUpperCase();
+			const lastLetter = tempValue[tempValue.length - 1];
+			value = lastLetter;
 			GameDirection.nextPosition();
 			dispatch('input', { value: value, rowPosition: rowPosition, colPosition: colPosition });
 		}
@@ -27,6 +30,14 @@
 		GameDirection.updateCurrentPosition(rowPosition, colPosition);
 		GameDirection.changeDirection();
 	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key == 'Delete' || event.key == 'Backspace') {
+			value = '';
+			GameDirection.previousPosition();
+			dispatch('input', { value: value, rowPosition: rowPosition, colPosition: colPosition });
+		}
+	}
 </script>
 
 <div class="cell" class:is-black={isBlack}>
@@ -35,9 +46,9 @@
 			{id}
 			type="text"
 			bind:value
-			maxlength="1"
 			on:input={handleInput}
 			on:click={handleClick}
+			on:keydown={handleKeydown}
 			class:is-blocked={isBlocked}
 			class:is-on-focus={isOnFocus}
 			disabled={isBlocked}
