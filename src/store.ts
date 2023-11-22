@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 export enum Direction {
     Vertical,
@@ -34,3 +34,8 @@ const initialUserState: UserState = {
 // Create writable stores
 export const gameStore = writable<GameState>(initialGameState);
 export const userStore = writable<UserState>(initialUserState);
+
+export const gameSize = derived(gameStore, $gameStore => ({
+    rows: $gameStore.words.length,
+    cols: $gameStore.words[0] ? $gameStore.words[0].length : 0,
+}));
