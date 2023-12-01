@@ -1,14 +1,16 @@
+import type { GameState } from '../store';
+import ApiSingleton from './ApiSingleton';
+
 const GameServices = {
-    submitGame: async (game: any) => {
-        const response = await fetch('http://localhost:3001/games', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(game)
-        })
-        return await response.json()
+    submitGame: async (game: GameState) => {
+        return await ApiSingleton.post('crossword', game);
     },
+    getGames: async () => {
+        return await ApiSingleton.get('crossword');
+    },
+    getLastGame: async () => {
+        return await ApiSingleton.get('/last');
+    }
 }
 
-export default GameServices
+export default GameServices;
