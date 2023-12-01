@@ -23,7 +23,6 @@
 		if (value.length > 1 || value == '' || value == null) return;
 
 		updateGameStore(row, col, value);
-		console.log($gameStore.words);
 	}
 
 	function updateGameStore(row: number, col: number, value: string) {

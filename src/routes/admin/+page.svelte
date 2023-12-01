@@ -2,10 +2,16 @@
 	import Grid from '../../components/Grid.svelte';
 	import GridSizeSelect from '../../components/GridSizeSelect.svelte';
 	import { gameStore, gameSize } from '../../store';
-	import GameServices from '../../services/gameServices';
+	import GameServices from '../../services/GameServices';
+	import WordsToFind from '../../components/WordsToFind.svelte';
+	import { errorStore } from '../../store';
+
+	let error = '';
 
 	function SubtmitGame() {
-		GameServices.submitGame($gameStore.words);
+		GameServices.submitGame($gameStore).catch((error) => {
+			errorStore.set(error.message);
+		});
 	}
 </script>
 
@@ -14,3 +20,4 @@
 <GridSizeSelect />
 <Grid rows={$gameSize.rows} cols={$gameSize.cols} />
 <button on:click={SubtmitGame}>submit game</button>
+<WordsToFind />
