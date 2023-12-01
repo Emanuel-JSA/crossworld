@@ -39,3 +39,6 @@ export const gameSize = derived(gameStore, $gameStore => ({
     rows: $gameStore.words.length,
     cols: $gameStore.words[0] ? $gameStore.words[0].length : 0,
 }));
+
+// Create error store
+export const errorStore = writable('');
